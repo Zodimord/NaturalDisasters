@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry excluding="engine/" kind="src" path="NaturalDisasters/src/main/java"/>
+	<classpathentry kind="src" path="NaturalDisasters/src/main/java/engine"/>
+	<classpathentry kind="lib" path="NaturalDisasters/lib/ApacheCommons/commons-math3-3.6.1.jar"/>
+	<classpathentry kind="lib" path="NaturalDisasters/lib/XChart/xchart-3.8.1.jar"/>
+	<classpathentry kind="output" path="NaturalDisasters/bin"/>
+</classpath>
