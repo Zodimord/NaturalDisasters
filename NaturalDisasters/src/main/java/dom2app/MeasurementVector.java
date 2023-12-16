@@ -3,7 +3,7 @@ package dom2app;
 import java.util.ArrayList;
 import java.util.Collections;
 import org.apache.commons.math3.util.Pair;
-import org.apache.commons.math3.stat.descriptive.moment.Kurtosis;
+import org.apache.commons.math3.stat.regression.SimpleRegression;
 
 /*
  * H class MeasurementVector ylopoiei to IMeasurementVector interface pou mas dinetai etoimo
@@ -85,18 +85,39 @@ public class MeasurementVector implements IMeasurementVector{
 		return stats;
 	}
 	// edw ypologizoume to regression
-	public ArrayList<Double> calculateRegression()	{
-		ArrayList<Double> list = new ArrayList<Double>();
-		
-		return list;
+	public SimpleRegression calculateRegression()	{
+		SimpleRegression regression = new SimpleRegression();
+        for (Pair<Integer, Integer> dataPoint : getMeasurements()) {
+            regression.addData(dataPoint.getKey(), dataPoint.getValue());
+        }
+        return regression; 
 	}
 	// metatrepw to apotelesma tou regression se String kai to epistrefw
 	public String getRegressionResultAsString() {
-		String regressionResult = "";
-		
-		return regressionResult;
+		SimpleRegression regression = calculateRegression();
+        double intercept = regression.getIntercept();
+        double slope = regression.getSlope();
+        double slopeError = regression.getSlopeStdErr();
+        String tendency = getLabel();
+
+        return String.format("RegressionResult [intercept=%.4f, slope=%.4f, slopeError=%.4f, Tendency %s]",
+                intercept, slope, slopeError, tendency);
 	}
 	
+	public String getLabel() {
+		SimpleRegression regression = calculateRegression();
+        double slope = regression.getSlope();
+        
+        if (Double.isNaN(slope)) {
+            return "Tendency Undefined";
+        } else if (slope > 0.1) {
+            return "Increased Tendency";
+        } else if (slope < -0.1) {
+            return "Decreased Tendency";
+        } else {
+            return "Tendency stable";
+        }
+    }
 	//akolouthoun voithitikes synarthseis
 	private double calculateGeometricMean(ArrayList<Integer> data) {
 	   double product = 1.0;
